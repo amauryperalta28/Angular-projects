@@ -1,0 +1,11 @@
+<div class="row">
+  <div *ngFor="let resultado of resultados" class="col-md-4 col-sm-6 animate__animated animate__fadeIn">
+    <div class="card">
+      <img [src]="resultado.images.downsized.url" [alt] = "resultado.title" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{resultado.title}}</h5>
+
+      </div>
+    </div>
+  </div>
+</div>
