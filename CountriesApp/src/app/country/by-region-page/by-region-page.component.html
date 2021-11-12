@@ -1,1 +1,27 @@
-<p>by-region-page works!</p>
+<h3>Buscar por region <small>{{selectedRegion | titlecase}}</small></h3>
+<hr>
+
+<h4>Seleccione una region</h4>
+
+<div class="row">
+  <div class="col">
+     <!-- <button class="btn btn-outline-primary" [class.btn-primary]="region === selectedRegion" *ngFor="let region of regions" (click)="selectRegion(region)">{{region}}</button> -->
+     <!-- <button class="btn" [ngClass]="{
+         'btn-outline-primary': region!= selectedRegion,
+         'btn-primary': region === selectedRegion}"
+     *ngFor="let region of regions"
+     (click)="selectRegion(region)">{{region}}</button> -->
+
+     <button class="btn" [class]="getSelectionClass( region )"
+  *ngFor="let region of regions"
+  (click)="selectRegion(region)">{{region |titlecase}}</button>
+  </div>
+</div>
+
+<div class="row mt-2 animate__animated animate__fadeIn animate__faster" *ngIf="countries.length > 0">
+  <div class="col">
+    <app-country-table [countries]="countries"></app-country-table>
+  </div>
+</div>
+
+

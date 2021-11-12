@@ -11,6 +11,8 @@ export class ByCountryPageComponent implements OnInit {
   termino: string = '';
   anErrorHappened: boolean = false;
   countries: Country[] = [];
+  sugestedCountries: Country[] = [];
+  showSuggestions: boolean = false;
 
 
   constructor(private countryService: CountryService) { }
@@ -20,6 +22,7 @@ export class ByCountryPageComponent implements OnInit {
 
   buscar(termino: string){
     this.anErrorHappened = false;
+    this.showSuggestions = false;
     this.termino = termino;
 
     this.countryService.searchCountryByName(termino)
@@ -34,7 +37,19 @@ export class ByCountryPageComponent implements OnInit {
 
   sugerencias(value: string){
     this.anErrorHappened = false;
-    console.log('el bobo');
+    this.termino = value;
+    this.showSuggestions = true;
+
+    this.countryService.searchCountryByName(value)
+    .subscribe((result) =>{
+      this.sugestedCountries = result.splice(0, 5);
+       console.log(result);
+    }, (err)=>{
+      this.sugestedCountries = [];
+      this.anErrorHappened = true;
+    });
   }
+
+
 
 }

@@ -12,11 +12,29 @@
   </div>
 </div>
 
+<ul class="list-group" *ngIf="showSuggestions">
+  <li
+    *ngFor="let country of sugestedCountries"
+    class="list-group-item list-group-item-action"
+  >
+    <a class="nav-link" [routerLink]="['/pais', country.cca2]">
+      {{ country.name.common }}</a
+    >
+  </li>
+
+  <li  class="list-group-item list-group-item-action">
+    <a class="nav-link" (click)="buscar(termino)"> Buscar "{{ termino }}"</a>
+  </li>
+</ul>
+
 <div *ngIf="anErrorHappened" class="alert alert-danger">
   No se encontro nada con el termino {{ termino }}
 </div>
 
-<div class="row" *ngIf="countries.length > 0">
+<div
+  class="row animate__animated animate__fadeInUp"
+  *ngIf="countries.length > 0"
+>
   <div class="col">
     <app-country-table [countries]="countries"></app-country-table>
   </div>
