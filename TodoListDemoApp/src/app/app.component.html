@@ -1,0 +1,47 @@
+
+<p-dialog header="New Task" [(visible)]="display" position="top" [style]="{width: '30vw'}">
+  <div class="grid">
+    <div class="col-12">
+      <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">Task</span>
+          <input type="text" pInputText
+          [(ngModel)]="newTask"
+          class="p-field full-lengh "
+          placeholder="Description of task"
+          (keyup.enter)="saveTask()"
+          >
+      </div>
+   </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button  label="Close" styleClass="p-button-secondary" (click)="close()"></p-button>
+    <p-button  label="Save Changes" styleClass="p-button-primary" (click)="saveTask()"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+<div class="grid justify-content-center">
+  <div class="col-6">
+    <h1>TODO List Demo App</h1>
+    <p class="quote">Do it now.</p>
+
+    <div>
+      <p-toolbar>
+        <div class="p-toolbar-group-left"></div>
+        <div class="p-toolbar-group-right">
+          <p-button
+            label="Add Task"
+            styleClass="p-button-outlined p-button-info"
+            (click)="openModal()"
+          ></p-button>
+        </div>
+      </p-toolbar>
+    </div>
+
+   <div class="mt-2">
+    <app-task-list [tasks]="tasks" (onDeleteTask)="delete($event)" (onEditTask)="edit($event)"  class="mt-5"></app-task-list>
+   </div>
+
+  </div>
+</div>

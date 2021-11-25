@@ -1,0 +1,43 @@
+<p-table [value]="tasks" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>Task Name</th>
+      <th>Status</th>
+      <th>Edit</th>
+      <th>Remove</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-task let-rowIndex="rowIndex">
+    <tr>
+      <td>{{ rowIndex + 1 }}</td>
+      <td>{{ task.name }}</td>
+      <td>
+        <button
+          pButton
+          class="p-button-outlined"
+          [ngClass]="getStatusClass(task.status)"
+
+          [label]="task.status | taskStatus"
+        ></button>
+      </td>
+      <td>
+        <button
+          class="p-button-outlined p-button-info"
+          pButton
+          icon="pi pi-pencil"
+          (click)="edit(rowIndex)"
+        ></button>
+      </td>
+      <td>
+        <button
+          class="p-button-outlined p-button-secondary"
+          pButton
+          icon="pi pi-trash"
+          (click)="delete(rowIndex)"
+          >
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
