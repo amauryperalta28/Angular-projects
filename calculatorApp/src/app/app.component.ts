@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -18,13 +18,12 @@ export class AppComponent {
   dotIsAdded: boolean = false;
   wasPressedOperator: boolean = false;
 
-
-  getButtonClass(button: string): string {
-    return button == '=' ? 'buttons equals' : 'buttons';
+  getButtonClass(pressedButton: string): string {
+    return pressedButton == '=' ? 'buttons equals' : 'buttons';
   }
 
   pressButton(button: string) {
-    const buttonPressed = this.numbers.indexOf(button) > -1 ? "number" :
+    const buttonPressed: string = this.numbers.indexOf(button) > -1 ? "number" :
       this.operators.indexOf(button) > -1 ? "operator" : button;
 
     switch (buttonPressed) {
@@ -105,30 +104,18 @@ export class AppComponent {
 
   pressEqualButton(): void {
     const entityMap: Map<string, Function> = new Map([
-      ['+', (a: number, b: number) => {
-
-        return a + b;
-      }],
-      ['-', (a: number, b: number) => {
-
-        return a - b;
-      }],
-      ['X', (a: number, b: number) => {
-
-        return a * b;
-      }],
-      ['/', (a: number, b: number) => {
-
-        return a / b;
-      }],
+      ['+', (a: number, b: number) => { return a + b; }],
+      ['-', (a: number, b: number) => { return a - b; }],
+      ['X', (a: number, b: number) => { return a * b; }],
+      ['/', (a: number, b: number) => { return a / b; }],
     ]);
 
-    const operation = entityMap.get(this.currentOperator);
+    const performOperation = entityMap.get(this.currentOperator);
 
     if (this.operand1 != 0) {
       this.operand2 = Number(this.calculatorMonitor);
-      this.calculatorMonitor = operation!(this.operand1, this.operand2);
-      console.log(operation!(this.operand1, this.operand2));
+      this.calculatorMonitor = performOperation!(this.operand1, this.operand2);
+      console.log(performOperation!(this.operand1, this.operand2));
 
       this.restartCalculator();
     }
