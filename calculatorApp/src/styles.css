@@ -5,7 +5,9 @@
 
 body, html{
   height: 100%;
+  width: 100%;
   background-color: #FFDD00;
+  background-image: linear-gradient(to right, #FFDD00 , #FCBC26);
   display: flex;
   justify-content: center;
   align-items: center;
