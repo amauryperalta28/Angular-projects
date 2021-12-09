@@ -6,148 +6,104 @@ import { Component, ElementRef } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  monitor: string = "0";
+  calculatorMonitor: string = "0";
 
-  buttons: string[] = [
-    "C",
-    "+-",
-    "%",
-    "/",
-    "7",
-    "8",
-    "9",
-    "X",
-    "4",
-    "5",
-    "6",
-    "-",
-    "1",
-    "2",
-    "3",
-    "+",
-    "0",
-    ".",
-    "=",
-
-  ];
-
-  numbers: string[] = [
-    "7",
-    "8",
-    "9",
-    "4",
-    "5",
-    "6",
-    "1",
-    "2",
-    "3",
-    "0",
-  ];
-
+  buttons: string[] = ["C", "+-", "%", "/", "7", "8", "9", "X", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "="];
+  numbers: string[] = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0",];
   operators: string[] = ["/", "X", "-", "+",];
 
   currentOperator: string = "none";
   operand1: number = 0;
-  operand2: number = 1;
+  operand2: number = 0;
+  dotIsAdded: boolean = false;
+  wasPressedOperator: boolean = false;
 
 
   getButtonClass(button: string): string {
     return button == '=' ? 'buttons equals' : 'buttons';
   }
 
-  pressButton(content: string) {
-    const isNumber: boolean = this.numbers.indexOf(content) > -1;
-    const isOperator: boolean = this.operators.indexOf(content) > -1;
+  pressButton(button: string) {
+    const buttonPressed = this.numbers.indexOf(button) > -1 ? "number" :
+      this.operators.indexOf(button) > -1 ? "operator" : button;
 
-    switch (content) {
+    switch (buttonPressed) {
       case "C":
-        this.pressButtonClear();
+        this.pressClearButton();
         break;
-        case "%":
-          this.pressPercentButton();
-          break;
-        case "+-":
-          this.pressChangeSignButton();
+      case "%":
+        this.pressPercentButton();
+        break;
+      case "+-":
+        this.pressChangeSignButton();
 
-          break;
-        case "=":
-          this.pressEqualBotton();
-          break;
+        break;
+      case "=":
+        this.pressEqualButton();
+        break;
+      case ".":
+        this.pressDotButton();
+
+        break;
+      case "number":
+        this.pressButtonNumber(button);
+        break;
+      case "operator":
+        this.pressAnOperatorButton(button);
+        break;
 
       default:
-        if(isNumber){
-          this.pressButtonNumber(content);
-          return;
-        }else if(isOperator){
-          this.pressButtonOperator(content);
-          return;
-        }
-
         alert("You press an unknown button.");
-
         break;
     }
-
-    // if (isClear) {
-    //   this.pressButtonClear();
-    //   return;
-    // }
-
-    // if(isPercent){
-    //   this.pressPercentButton();
-    // }
-
-    // if(isSign){
-    //   this.monitor = String(Number(this.monitor) * -1);
-    // }
-
-    // if (isNumber) {
-    //   this.pressButtonNumber(content);
-    //   return;
-    // }
-
-    // if (isEqual) {
-    //   this.pressEqualBotton();
-    // }
-
-    // if (isOperator) {
-    //   this.pressButtonOperator(content);
-    //   return;
-    // }
   }
 
-  private pressChangeSignButton() {
-    this.monitor = String(Number(this.monitor) * -1);
+  private pressDotButton(): void {
+    if (!this.dotIsAdded) {
+      this.calculatorMonitor += ".";
+    }
+
+    this.dotIsAdded = true;
   }
 
-  private pressPercentButton() {
-    this.operand1 = Number(this.monitor);
-    this.monitor = String(this.operand1 / 100);
+  private pressChangeSignButton(): void {
+    this.calculatorMonitor = String(Number(this.calculatorMonitor) * -1);
+  }
+
+  private pressPercentButton(): void {
+    this.operand1 = Number(this.calculatorMonitor);
+    this.calculatorMonitor = String(this.operand1 / 100);
     this.operand1 = 0;
+
+    this.wasPressedOperator = false;
   }
 
   pressButtonNumber(number: string): void {
-    if (this.operand1 != 0) {
-      this.monitor = "0";
+    if (this.wasPressedOperator) {
+      this.calculatorMonitor = "0";
     }
 
-    this.monitor += number;
-    this.monitor = Number(this.monitor).toString();
+    this.calculatorMonitor += number;
+    this.calculatorMonitor = Number(this.calculatorMonitor).toString();
+    this.wasPressedOperator = false;
+
     return;
   }
 
-  pressButtonOperator(operator: string): void  {
-    this.operand1 = Number(this.monitor);
+  pressAnOperatorButton(operator: string): void {
+    this.operand1 = Number(this.calculatorMonitor);
     this.currentOperator = operator;
+    this.wasPressedOperator = true;
     return;
   }
 
-  pressButtonClear(): void  {
-    this.monitor = "0";
+  pressClearButton(): void {
+    this.calculatorMonitor = "0";
+    this.restartCalculator();
     return;
   }
 
-  pressEqualBotton(): void  {
+  pressEqualButton(): void {
     const entityMap: Map<string, Function> = new Map([
       ['+', (a: number, b: number) => {
 
@@ -170,13 +126,19 @@ export class AppComponent {
     const operation = entityMap.get(this.currentOperator);
 
     if (this.operand1 != 0) {
-      this.operand2 = Number(this.monitor);
-      this.monitor = operation!(this.operand1, this.operand2);
+      this.operand2 = Number(this.calculatorMonitor);
+      this.calculatorMonitor = operation!(this.operand1, this.operand2);
       console.log(operation!(this.operand1, this.operand2));
 
-      this.operand1 = 0;
-      this.operand2 = 0;
-      this.currentOperator = "none";
+      this.restartCalculator();
     }
+  }
+
+  restartCalculator(): void {
+    this.operand1 = 0;
+    this.operand2 = 0;
+    this.currentOperator = "none";
+    this.dotIsAdded = false;
+    this.wasPressedOperator = false;
   }
 }
