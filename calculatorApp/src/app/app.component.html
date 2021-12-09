@@ -1,0 +1,12 @@
+<div class="calculator-container">
+  <div class="calculator-screen">
+    <!-- <input type="number" placeholder="0" [(ngModel)] = "monitor"> -->
+    <p >{{monitor}}</p>
+  </div>
+
+  <div class="calculator-buttons">
+      <div *ngFor="let button of buttons" (click)="pressButton(button)" [class]="getButtonClass(button)" >
+            {{button}}
+      </div>
+  </div>
+</div>
