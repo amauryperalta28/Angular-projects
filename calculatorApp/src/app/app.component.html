@@ -4,8 +4,8 @@
   </div>
 
   <div class="calculator-buttons">
-      <div *ngFor="let button of buttons" (click)="pressButton(button)" [class]="getButtonClass(button)" >
-            {{button}}
+      <div *ngFor="let button of buttons" (click)="button.performAction(button.text)" [class]="getButtonClass(button.text)" >
+            {{button.text}}
       </div>
   </div>
 </div>
