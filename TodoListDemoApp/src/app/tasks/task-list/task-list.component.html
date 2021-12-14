@@ -19,6 +19,7 @@
           [ngClass]="getStatusClass(task.status)"
 
           [label]="task.status | taskStatus"
+          (click)="updateStatus(task)"
         ></button>
       </td>
       <td>

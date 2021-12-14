@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TODOTask, taskStatus } from './tasks/interfaces/tasks-interfaces.interface';
+import { taskStatus, TODOTask } from './tasks/interfaces/tasks-interfaces.interface';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ export class AppComponent {
 
   saveTask(): void {
 
-    if(this.newTask ==="" || this.newTask == undefined){
+    if (this.newTask === "" || this.newTask == undefined) {
       alert("El texto de la tarea no puede estar vacio");
       return;
     }
@@ -46,19 +46,32 @@ export class AppComponent {
     this.tasks.splice(id, 1);
   }
 
-  edit(id: number) {
+  edit(id: number): void {
 
     const taskToEdit = this.tasks[id];
     this.newTask = taskToEdit.name;
     this.taskToModified = id;
 
     this.display = true;
+    this.taskToModified = -1;
 
   }
 
-  close() {
+  changeTaskStatus(task: TODOTask): void {
+
+    let item: TODOTask = this.tasks.filter(x => x.name === task.name)[0];
+
+    if (item.status == taskStatus.Todo) {
+      item.status = taskStatus.inProgress;
+    } else if (item.status == taskStatus.inProgress) {
+      item.status = taskStatus.Done;
+    }
+  }
+
+  close(): void {
     this.display = false;
     this.newTask = "";
+    this.taskToModified = -1;
   }
 
 }

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
 import { taskStatus, TODOTask } from '../interfaces/tasks-interfaces.interface';
 
 @Component({
@@ -12,6 +11,7 @@ export class TaskListComponent {
   @Input() tasks: TODOTask[] = [];
   @Output() onDeleteTask: EventEmitter<number> = new EventEmitter<number>();
   @Output() onEditTask: EventEmitter<number> = new EventEmitter<number>();
+  @Output() onUpdateTaskStatus: EventEmitter<TODOTask> = new EventEmitter<TODOTask>();
 
 
   getStatusClass(status: taskStatus): string {
@@ -26,12 +26,16 @@ export class TaskListComponent {
     }
   }
 
-  delete(id: number){
+  delete(id: number): void {
     this.onDeleteTask.emit(id);
   }
 
-  edit(id: number){
+  edit(id: number): void {
     this.onEditTask.emit(id);
+  }
+
+  updateStatus(task: TODOTask): void {
+    this.onUpdateTaskStatus.emit(task);
   }
 
 

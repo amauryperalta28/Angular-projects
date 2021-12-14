@@ -40,7 +40,7 @@
     </div>
 
    <div class="mt-2">
-    <app-task-list [tasks]="tasks" (onDeleteTask)="delete($event)" (onEditTask)="edit($event)"  class="mt-5"></app-task-list>
+    <app-task-list [tasks]="tasks" (onDeleteTask)="delete($event)" (onEditTask)="edit($event)" (onUpdateTaskStatus)="changeTaskStatus($event)" class="mt-5"></app-task-list>
    </div>
 
   </div>
